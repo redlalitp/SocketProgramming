@@ -1,0 +1,32 @@
+<project name="IndexServer" default="compile" basedir=".">
+  <description>
+    simple example build file
+  </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="."/>
+  <property name="build" location="."/>
+  
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create the build directory structure used by compile -->
+    
+  </target>
+
+  <target name="compile" depends="init"
+        description="compile the source">
+    <!-- Compile the java code from ${src} into ${build} -->
+    <javac srcdir="${src}" destdir="${build}"/>
+  </target>
+	
+  <target name="clean">
+	<delete>
+	    <fileset dir=".">
+		<include name="*.class"/>
+		<include name="output.txt"/>
+	    </fileset>
+    </delete>
+  </target>
+
+  
+</project>

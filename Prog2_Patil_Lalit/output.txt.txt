@@ -1,0 +1,137 @@
+Peer
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+1
+Enter Key:
+A
+Enter Value:
+Apple
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+1
+Enter Key:
+B
+Enter Value:
+Bat
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+1
+Enter Key:
+C
+Enter Value:
+Cat
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+1
+Enter Key:
+D
+Enter Value:
+Dog
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+1
+Enter Key:
+E
+Enter Value:
+Elephant
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+2
+Enter Key:
+A
+Value: Apple
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+2
+Enter Key:
+B
+Value: Bat
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+2
+Enter Key:
+C
+Value: Cat
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+2
+Enter Key:
+D
+Value: Dog
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+2
+Enter Key:
+E
+Value: Elephant
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+2
+Enter Key:
+F
+Value: Not Found!!!
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+3
+Enter Key:
+A
+Deleted!
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+3
+Enter Key:
+D
+Deleted!
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:
+2
+Enter Key:
+A
+Value: Not Found!!!
+1. Put Key
+2. Get Key
+3. Delete Key
+4. Exit
+Make selection:

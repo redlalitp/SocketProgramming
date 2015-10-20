@@ -1,0 +1,198 @@
+
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+
+
+public class IndexServer {
+
+	ServerSocket myServerSocket;
+	private static HashMap<Integer,String> PeerList = new HashMap< Integer,String>();
+	private static HashMap<Integer, File[]> PeerFileList = new HashMap<Integer, File[]>();
+	private static File[] files;
+
+
+	public IndexServer(int port) 
+	{ 
+		try
+		{ 
+			//myServerSocket = new ServerSocket(11111);
+			myServerSocket = new ServerSocket(port);
+		} 
+		catch(IOException ioe) 
+		{ 
+			System.out.println("Could not create server socket on port 11111. Quitting."); 
+			System.exit(-1); 
+		} 
+
+
+		while(true) 
+		{                        
+			try
+			{ 
+				// Accept incoming connections. 
+				Socket clientSocket = myServerSocket.accept(); 
+
+				ClientServiceThread cliThread = new ClientServiceThread(clientSocket);
+				cliThread.start();
+
+			} 
+			catch(IOException ioe) 
+			{ 
+				System.out.println("Exception encountered on accept. Ignoring. Stack Trace :"); 
+				ioe.printStackTrace(); 
+			} 
+
+		}
+
+
+
+	} 
+
+	public static void main (String[] args) 
+	{ 
+		new IndexServer(Integer.parseInt(args[0]));        
+	} 
+
+
+
+	class ClientServiceThread extends Thread 
+	{ 
+		Socket clientSocket;
+		private PrintStream os;
+		private BufferedReader in = null;
+
+		public ClientServiceThread() 
+		{ 
+			super(); 
+		} 
+
+		ClientServiceThread(Socket s) 
+		{ 
+			clientSocket = s; 
+
+		} 
+
+		public void run() 
+		{            
+
+			try{
+				in = new BufferedReader(new InputStreamReader(
+						clientSocket.getInputStream()));
+
+				OutputStream os = clientSocket.getOutputStream();
+				OutputStreamWriter osw = new OutputStreamWriter(os);
+				BufferedWriter bw = new BufferedWriter(osw);
+
+				String clientSelection;
+				while ((clientSelection = in.readLine()) != null) {
+						System.out.println(clientSelection);
+					switch (clientSelection) {
+					case "1":
+						
+						String peerSockValue = in.readLine();
+						System.out.println(">>>>"+peerSockValue);
+						//int filesCount = Integer.parseInt(in.readLine());
+						String fCount = in.readLine();
+						System.out.println(fCount);
+						int filesCount = Integer.parseInt(fCount);
+						File[] files = new File[filesCount];
+
+						for(int i = 0; i < filesCount; i++)
+						{
+							String fileName = in.readLine();
+							files[i] = new File(fileName);
+						}
+
+						int ID = new IdGenerator().newID();
+						PeerList.put(ID,peerSockValue );
+						System.out.println("\nsocket: "+ clientSocket);
+
+						PeerFileList.put(ID,files);
+						System.out.println("\n>>>>>End of case 1");
+						files = new File[0];
+						break;
+
+
+					case "2":
+
+						List<File> searchfiles = new ArrayList<File>();
+						List<Integer> peerArray = new ArrayList<Integer>();
+						String fileName = in.readLine();
+
+						System.out.println("\nRegistered Peers and files");
+
+						for(int i=0;i<PeerList.size();i++){
+							System.out.println("\nPeer "+i + "    " + PeerList.get(i));
+							for(int k=0;k<PeerFileList.get(i).length;k++)
+								System.out.println("\n\t"+ PeerFileList.get(i)[k]);
+						}
+
+						if(IndexServer.PeerFileList.containsValue(fileName));
+						{
+							for(int i=0;i<PeerFileList.size();i++){
+								for(int k=0;k<PeerFileList.get(i).length;k++)
+									searchfiles.add(PeerFileList.get(i)[k]);
+								for(int j=0;j<searchfiles.size();j++){
+									if(fileName.equals(searchfiles.get(j).toString())){
+										peerArray.add(i);
+									}
+								}
+								searchfiles.clear();
+							}
+						}
+
+						System.out.println("\nPeerArray Size: "+peerArray.size());
+
+						if(peerArray.size()>0){
+							System.out.println("\nFile Available at peer number: \n");
+
+							bw.write("\nFile Available at peer number: \n");
+							bw.flush();
+							String response = "";
+							for(int i= 0;i<peerArray.size();i++){
+								response = response + peerArray.get(i)+"\t port "+ PeerList.get(peerArray.get(i))+":";
+								
+							}
+							//System.out.println(response);
+							bw.write(response+"\n");
+							//bw.append(null);
+							bw.flush();
+
+							int peer = Integer.parseInt(in.readLine())-'0';
+							System.out.println("\n"+peer);
+							try{
+								if(peer != -1){
+							
+								bw.write(PeerList.get(peer).toString());
+								bw.newLine();
+								bw.flush();
+							}
+							}catch(NullPointerException n){
+								System.out.println("Download Cancelled");
+							}
+
+						}else{
+							System.out.println("\nFile does not exist!");
+
+							bw.write("\nFile does not exist!\n");
+							bw.flush();
+						}
+
+					} 
+
+
+				} 
+			}catch(IOException ioe) 
+			{ 
+				ioe.printStackTrace(); 
+			} 
+		}
+	}
+}
